@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const validator = require("validator");
 
 const userSchema = mongoose.Schema({
   name: {
@@ -19,4 +20,4 @@ const userSchema = mongoose.Schema({
   },
 });
 
-module.exports = { userSchema };
+module.exports = mongoose.model("user", userSchema);

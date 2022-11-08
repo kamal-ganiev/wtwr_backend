@@ -8,10 +8,10 @@ const getClothingItems = (req, res) => {
 };
 
 const createClothingItem = (req, res) => {
-  const { name, weather, imageUrl, owner } = req.body;
+  const { name, weather, imageUrl } = req.body;
 
   clothingItem
-    .create({ name, weather, imageUrl, owner: owner })
+    .create({ name, weather, imageUrl })
     .then((itemList) => res.send({ data: itemList }))
     .catch((err) => res.status(500).send({ message: err.message }));
 };
