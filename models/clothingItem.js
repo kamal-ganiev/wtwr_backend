@@ -9,8 +9,9 @@ const clothingItem = mongoose.Schema({
     maxlength: 30,
   },
   weather: {
-    required: true,
+    type: String,
     enum: ["hot", "cold", "warm"],
+    required: true,
   },
   imageUrl: {
     type: String,
@@ -37,3 +38,5 @@ const clothingItem = mongoose.Schema({
     default: Date.now,
   },
 });
+
+module.exports = { clothingItem };
