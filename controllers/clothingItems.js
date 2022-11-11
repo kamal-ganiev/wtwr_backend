@@ -7,12 +7,6 @@ const getClothingItems = (req, res) => {
   clothingItem
     .find({})
     .then((itemList) => {
-      if (itemList.length === 0) {
-        res.status(200).send({ message: 'There is no any items yet' });
-
-        return;
-      }
-
       res.send(itemList);
     })
     .catch((err) => res.status(500).send({ message: err.message }));
