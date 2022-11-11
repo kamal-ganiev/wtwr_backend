@@ -48,4 +48,48 @@ const deleteClothingItem = (req, res) => {
     });
 };
 
-module.exports = { getClothingItems, createClothingItem, deleteClothingItem };
+const addLike = (req, res) => {
+  clothingItem
+    .findByIdAndUpdate(
+      req.params.itemId,
+      { $addToSet: { likes: req.user._id } },
+      { new: true }
+    )
+    .then((item) => res.send({ data: item }))
+    .catch((err) => {
+      if (err.name === "CastError") {
+        res.status(404).send({ message: "There is no item with requested ID" });
+
+        return;
+      }
+
+      res.status(500).send({ message: err.message });
+    });
+};
+
+const removeLike = (req, res) => {
+  clothingItem
+    .findByIdAndUpdate(
+      req.params.itemId,
+      { $pull: { likes: req.user._id } },
+      { new: true }
+    )
+    .then((item) => res.send({ data: item }))
+    .catch((err) => {
+      if (err.name === "CastError") {
+        res.status(404).send({ message: "There is no item with requested ID" });
+
+        return;
+      }
+
+      res.status(500).send({ message: err.message });
+    });
+};
+
+module.exports = {
+  getClothingItems,
+  createClothingItem,
+  deleteClothingItem,
+  addLike,
+  removeLike,
+};
