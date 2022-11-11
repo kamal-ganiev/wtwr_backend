@@ -1,11 +1,11 @@
-const User = require("../models/user");
-const { orFailFunction, handleError } = require("../utils/errors");
+const User = require('../models/user');
+const { orFailFunction, handleError } = require('../utils/errors');
 
 const getUsers = (req, res) => {
   User.find({})
     .then((data) => {
       if (data.length === 0) {
-        res.status(200).send({ message: "There is no any users yet" });
+        res.status(200).send({ message: 'There is no any users yet' });
 
         return;
       }

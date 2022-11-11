@@ -1,5 +1,5 @@
-const clothingItem = require("../models/clothingItem");
-const { orFailFunction, handleError } = require("../utils/errors");
+const clothingItem = require('../models/clothingItem');
+const { orFailFunction, handleError } = require('../utils/errors');
 
 /// Handling Cards Calls \\\
 
@@ -8,7 +8,7 @@ const getClothingItems = (req, res) => {
     .find({})
     .then((itemList) => {
       if (itemList.length === 0) {
-        res.status(200).send({ message: "There is no any items yet" });
+        res.status(200).send({ message: 'There is no any items yet' });
 
         return;
       }
@@ -23,7 +23,12 @@ const createClothingItem = (req, res) => {
   const owner = req.user._id;
 
   clothingItem
-    .create({ name, weather, imageUrl, owner: owner })
+    .create({
+      name,
+      weather,
+      imageUrl,
+      owner,
+    })
     .then((item) => res.status(201).send(item))
     .catch((err) => {
       handleError(res, err);
