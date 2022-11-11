@@ -8,7 +8,7 @@ app.use(express.json());
 
 app.use((req, res, next) => {
   req.user = {
-    _id: "636d9e599dbf25f40d185fc2",
+    _id: "636dc2bca52f4cab8c84e179",
   };
 
   next();
@@ -16,6 +16,7 @@ app.use((req, res, next) => {
 
 app.use("/items", require("./routes/clothingItems"));
 app.use("/users", require("./routes/users"));
+app.use("*", require("./routes/errorHandler"));
 
 app.listen(PORT, () => {
   console.log(`Serving is running on http//:localhost:${PORT}`);

@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const { orFailFunction, handleError } = require("../utils/errors");
 
 const getUsers = (req, res) => {
   User.find({})
@@ -9,22 +10,19 @@ const getUsers = (req, res) => {
         return;
       }
 
-      res.send({ data: data });
+      res.send(data);
     })
     .catch((err) => res.status(500).send({ message: err.message }));
 };
 
 const getUserById = (req, res) => {
   User.findById(req.params.userId)
-    .then((user) => res.send({ data: user }))
+    .orFail(() => {
+      orFailFunction();
+    })
+    .then((user) => res.send(user))
     .catch((err) => {
-      if (err.name === "CastError") {
-        res.status(404).send({ message: "There is no user with requested ID" });
-
-        return;
-      }
-
-      res.status(500).send({ message: err.message });
+      handleError(res, err);
     });
 };
 
@@ -32,15 +30,9 @@ const createUser = (req, res) => {
   const { name, avatar } = req.body;
 
   User.create({ name, avatar })
-    .then((updatedUser) => res.send({ data: updatedUser }))
+    .then((updatedUser) => res.status(201).send(updatedUser))
     .catch((err) => {
-      if (err.name === "ValidationError") {
-        res.status(400).send({ message: `Bad request: ${err.message}` });
-
-        return;
-      }
-
-      res.status(500).send({ message: err.message });
+      handleError(res, err);
     });
 };
 

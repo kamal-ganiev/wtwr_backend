@@ -1,4 +1,7 @@
 const clothingItem = require("../models/clothingItem");
+const { orFailFunction, handleError } = require("../utils/errors");
+
+/// Handling Cards Calls \\\
 
 const getClothingItems = (req, res) => {
   clothingItem
@@ -10,7 +13,7 @@ const getClothingItems = (req, res) => {
         return;
       }
 
-      res.send({ data: itemList });
+      res.send(itemList);
     })
     .catch((err) => res.status(500).send({ message: err.message }));
 };
@@ -21,32 +24,25 @@ const createClothingItem = (req, res) => {
 
   clothingItem
     .create({ name, weather, imageUrl, owner: owner })
-    .then((itemList) => res.send({ data: itemList }))
+    .then((item) => res.status(201).send(item))
     .catch((err) => {
-      if (err.name === "ValidationError") {
-        res.status(400).send({ message: `Bad request: ${err.message}` });
-
-        return;
-      }
-
-      res.status(500).send({ message: err.message });
+      handleError(res, err);
     });
 };
 
 const deleteClothingItem = (req, res) => {
   clothingItem
     .findByIdAndRemove(req.params.itemId)
-    .then((itemList) => res.send({ data: itemList }))
+    .orFail(() => {
+      orFailFunction();
+    })
+    .then((itemList) => res.send(itemList))
     .catch((err) => {
-      if (err.name === "CastError") {
-        res.status(404).send({ message: "There is no item with requested ID" });
-
-        return;
-      }
-
-      res.status(500).send({ message: err.message });
+      handleError(res, err);
     });
 };
+
+/// Handling Likes \\\
 
 const addLike = (req, res) => {
   clothingItem
@@ -55,15 +51,12 @@ const addLike = (req, res) => {
       { $addToSet: { likes: req.user._id } },
       { new: true }
     )
-    .then((item) => res.send({ data: item }))
+    .orFail(() => {
+      orFailFunction();
+    })
+    .then((item) => res.send(item))
     .catch((err) => {
-      if (err.name === "CastError") {
-        res.status(404).send({ message: "There is no item with requested ID" });
-
-        return;
-      }
-
-      res.status(500).send({ message: err.message });
+      handleError(res, err);
     });
 };
 
@@ -74,15 +67,12 @@ const removeLike = (req, res) => {
       { $pull: { likes: req.user._id } },
       { new: true }
     )
-    .then((item) => res.send({ data: item }))
+    .orFail(() => {
+      orFailFunction();
+    })
+    .then((item) => res.send(item))
     .catch((err) => {
-      if (err.name === "CastError") {
-        res.status(404).send({ message: "There is no item with requested ID" });
-
-        return;
-      }
-
-      res.status(500).send({ message: err.message });
+      handleError(res, err);
     });
 };
 
