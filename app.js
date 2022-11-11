@@ -11,11 +11,12 @@ app.use((req, res, next) => {
   req.user = {
     _id: "6369ed0e0f913399a74738ca",
   };
+
   next();
 });
 
-app.use("/users", require("./routes/users"));
-app.use("/items", require("./routes/clothingItems"));
+app.use("/users", checkExistence, require("./routes/users"));
+app.use("/items", checkExistence, require("./routes/clothingItems"));
 
 app.listen(PORT, () => {
   console.log(`Serving is running on http//:localhost:${PORT}`);

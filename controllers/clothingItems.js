@@ -9,9 +9,10 @@ const getClothingItems = (req, res) => {
 
 const createClothingItem = (req, res) => {
   const { name, weather, imageUrl } = req.body;
+  const owner = req.user._id;
 
   clothingItem
-    .create({ name, weather, imageUrl })
+    .create({ name, weather, imageUrl, owner: owner })
     .then((itemList) => res.send({ data: itemList }))
     .catch((err) => res.status(500).send({ message: err.message }));
 };
