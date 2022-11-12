@@ -4,7 +4,7 @@ const { runServer } = require('./utils/config');
 const { PORT } = require('./utils/constants');
 
 const app = express();
-runServer();
+runServer('mongodb://localhost:27017/wtwr_db');
 
 app.use(helmet());
 app.use(express.json());
