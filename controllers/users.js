@@ -1,18 +1,26 @@
 const User = require('../models/user');
-const { orFailFunction, handleError } = require('../utils/errors');
+const {
+  completedRequest,
+  completedCreateRequst,
+  completedRequestWithEmptyRespond,
+} = require('../utils/constants');
+const {
+  orFailFunction,
+  handleError,
+  handleServerError,
+} = require('../utils/errors');
 
 const getUsers = (req, res) => {
   User.find({})
     .then((data) => {
       if (data.length === 0) {
-        res.status(200).send({ message: 'There is no any users yet' });
-
-        return;
+        completedRequestWithEmptyRespond(data, res);
       }
-
-      res.send(data);
+      completedRequest(data, res);
     })
-    .catch((err) => res.status(500).send({ message: err.message }));
+    .catch((err) => {
+      handleServerError(res, err);
+    });
 };
 
 const getUserById = (req, res) => {
@@ -20,7 +28,9 @@ const getUserById = (req, res) => {
     .orFail(() => {
       orFailFunction();
     })
-    .then((user) => res.send(user))
+    .then((user) => {
+      completedRequest(user, res);
+    })
     .catch((err) => {
       handleError(res, err);
     });
@@ -30,7 +40,9 @@ const createUser = (req, res) => {
   const { name, avatar } = req.body;
 
   User.create({ name, avatar })
-    .then((updatedUser) => res.status(201).send(updatedUser))
+    .then((updatedUser) => {
+      completedCreateRequst(updatedUser, res);
+    })
     .catch((err) => {
       handleError(res, err);
     });

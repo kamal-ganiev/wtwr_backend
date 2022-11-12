@@ -1,15 +1,29 @@
 const clothingItem = require('../models/clothingItem');
-const { orFailFunction, handleError } = require('../utils/errors');
+const {
+  completedRequest,
+  completedCreateRequst,
+  completedRequestWithEmptyRespond,
+} = require('../utils/constants');
+const {
+  orFailFunction,
+  handleError,
+  handleServerError,
+} = require('../utils/errors');
 
 /// Handling Cards Calls \\\
 
 const getClothingItems = (req, res) => {
   clothingItem
     .find({})
-    .then((itemList) => {
-      res.send(itemList);
+    .then((item) => {
+      if (item.length === 0) {
+        completedRequestWithEmptyRespond(item, res);
+      }
+      completedRequest(item, res);
     })
-    .catch((err) => res.status(500).send({ message: err.message }));
+    .catch((err) => {
+      handleServerError(res, err);
+    });
 };
 
 const createClothingItem = (req, res) => {
@@ -23,7 +37,9 @@ const createClothingItem = (req, res) => {
       imageUrl,
       owner,
     })
-    .then((item) => res.status(201).send(item))
+    .then((item) => {
+      completedCreateRequst(item, res);
+    })
     .catch((err) => {
       handleError(res, err);
     });
@@ -35,7 +51,9 @@ const deleteClothingItem = (req, res) => {
     .orFail(() => {
       orFailFunction();
     })
-    .then((itemList) => res.send(itemList))
+    .then((itemList) => {
+      completedRequest(itemList, res);
+    })
     .catch((err) => {
       handleError(res, err);
     });
@@ -53,7 +71,9 @@ const addLike = (req, res) => {
     .orFail(() => {
       orFailFunction();
     })
-    .then((item) => res.send(item))
+    .then((item) => {
+      completedRequest(item, res);
+    })
     .catch((err) => {
       handleError(res, err);
     });
@@ -69,7 +89,9 @@ const removeLike = (req, res) => {
     .orFail(() => {
       orFailFunction();
     })
-    .then((item) => res.send(item))
+    .then((item) => {
+      completedRequest(item, res);
+    })
     .catch((err) => {
       handleError(res, err);
     });
