@@ -14,8 +14,6 @@ const completedCreateRequst = (result, respond) => {
 
 const completedRequestWithEmptyRespond = (result, respond) => {
   respond.status(204);
-
-  return;
 };
 
 module.exports = {
