@@ -15,6 +15,11 @@ const handleError = (res, err) => {
 
     return;
   }
+  if (err.code === 11000) {
+    res.status(409).send({ message: 'Email you entered already exists' });
+
+    return;
+  }
 
   res.status(500).send({ message: err.message });
 };
@@ -23,13 +28,8 @@ const handleServerError = (res, err) => {
   res.status(500).send({ message: err.message });
 };
 
-const handleExistenceError = (res) => {
-  res.status(409).send({ message: 'Email you entered already exists' });
-};
-
 module.exports = {
   orFailFunction,
   handleError,
   handleServerError,
-  handleExistenceError,
 };

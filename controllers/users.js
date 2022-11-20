@@ -8,7 +8,6 @@ const {
   orFailFunction,
   handleError,
   handleServerError,
-  handleExistenceError,
 } = require('../utils/errors');
 
 const getUsers = (req, res) => {
@@ -40,19 +39,13 @@ const getUserById = (req, res) => {
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
 
-  User.findOne({ email: email }).then((check) => {
-    if (!check) {
-      User.create({ name, avatar, email, password })
-        .then((updatedUser) => {
-          completedCreateRequst(updatedUser, res);
-        })
-        .catch((err) => {
-          handleError(res, err);
-        });
-    } else {
-      handleExistenceError(res);
-    }
-  });
+  User.create({ name, avatar, email, password })
+    .then((updatedUser) => {
+      completedCreateRequst(updatedUser, res);
+    })
+    .catch((err) => {
+      handleError(res, err);
+    });
 };
 
 module.exports = { getUserById, getUsers, createUser };
