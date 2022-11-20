@@ -23,4 +23,13 @@ const handleServerError = (res, err) => {
   res.status(500).send({ message: err.message });
 };
 
-module.exports = { orFailFunction, handleError, handleServerError };
+const handleExistenceError = (res) => {
+  res.status(409).send({ message: 'Email you entered already exists' });
+};
+
+module.exports = {
+  orFailFunction,
+  handleError,
+  handleServerError,
+  handleExistenceError,
+};
