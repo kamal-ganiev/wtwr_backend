@@ -6,8 +6,7 @@ const {
   completedCreateRequst,
 } = require('../utils/constants');
 const { orFailFunction, handleError } = require('../utils/errors');
-const { JWT_SECRET } = require('../utils/config');
-
+const { JWT_SECRET } = process.env;
 const getUserById = (req, res) => {
   User.findById(req.params.userId)
     .orFail(() => {

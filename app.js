@@ -2,6 +2,7 @@ const express = require('express');
 const helmet = require('helmet');
 const { runServer } = require('./utils/config');
 const { PORT } = require('./utils/constants');
+require('dotenv').config();
 
 const app = express();
 runServer('mongodb://localhost:27017/wtwr_db');
