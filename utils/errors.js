@@ -28,8 +28,13 @@ const handleServerError = (res, err) => {
   res.status(500).send({ message: err.message });
 };
 
+const handleAuthError = (res) => {
+  res.status(401).send({ message: 'Authorization Error' });
+};
+
 module.exports = {
   orFailFunction,
   handleError,
   handleServerError,
+  handleAuthError,
 };
