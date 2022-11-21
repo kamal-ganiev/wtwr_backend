@@ -4,27 +4,9 @@ const jwt = require('jsonwebtoken');
 const {
   completedRequest,
   completedCreateRequst,
-  completedRequestWithEmptyRespond,
 } = require('../utils/constants');
-const {
-  orFailFunction,
-  handleError,
-  handleServerError,
-} = require('../utils/errors');
+const { orFailFunction, handleError } = require('../utils/errors');
 const { JWT_SECRET } = require('../utils/config');
-
-const getUsers = (req, res) => {
-  User.find({})
-    .then((data) => {
-      if (data.length === 0) {
-        completedRequestWithEmptyRespond(data, res);
-      }
-      completedRequest(data, res);
-    })
-    .catch((err) => {
-      handleServerError(res, err);
-    });
-};
 
 const getUserById = (req, res) => {
   User.findById(req.params.userId)
@@ -69,4 +51,4 @@ const login = (req, res) => {
     });
 };
 
-module.exports = { getUserById, getUsers, createUser, login };
+module.exports = { getUserById, createUser, login };
