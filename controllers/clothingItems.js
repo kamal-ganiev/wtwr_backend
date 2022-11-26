@@ -66,7 +66,7 @@ const addLike = (req, res) => {
     .findByIdAndUpdate(
       req.params.itemId,
       { $addToSet: { likes: req.user._id } },
-      { new: true }
+      { new: true },
     )
     .orFail(() => {
       orFailFunction();
@@ -84,7 +84,7 @@ const removeLike = (req, res) => {
     .findByIdAndUpdate(
       req.params.itemId,
       { $pull: { likes: req.user._id } },
-      { new: true }
+      { new: true },
     )
     .orFail(() => {
       orFailFunction();

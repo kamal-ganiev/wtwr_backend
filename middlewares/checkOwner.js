@@ -12,7 +12,7 @@ const checkOwner = (req, res, next) => {
       orFailFunction();
     })
     .then((item) => {
-      if (req.user._id.value !== item.owner.value) {
+      if (!item.owner.equals(req.user._id)) {
         handleDenyUpdate(res);
 
         return;

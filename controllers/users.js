@@ -8,7 +8,7 @@ const {
 } = require('../utils/constants');
 const { orFailFunction, handleError } = require('../utils/errors');
 
-const { JWT_SECRET } = process.env;
+const { JWT_SECRET = 'dev_-key' } = process.env;
 
 const getUserById = (req, res) => {
   User.findById(req.params.userId)
@@ -28,7 +28,7 @@ const createUser = (req, res) => {
     name,
     avatar,
     email,
-    password
+    password,
   } = req.body;
 
   bcrypt
@@ -37,10 +37,12 @@ const createUser = (req, res) => {
       name,
       avatar,
       email,
-      password: hash
+      password: hash,
     }))
     .then((updatedUser) => {
-      completedCreateRequst(updatedUser, res);
+      const updatedDataToSend = updatedUser;
+      updatedDataToSend.password = undefined;
+      completedCreateRequst(updatedDataToSend, res);
     })
     .catch((err) => {
       handleError(res, err);
@@ -78,80 +80,19 @@ const getCurrentUser = (req, res) => {
 
 /// Functions for User Update \\\
 
-const updateName = (req, res) => {
-  const { name } = req.body;
-
-  User.findByIdAndUpdate(req.user._id, { name }, opts)
-    .orFail(() => {
-      orFailFunction();
-    })
-    .then((user) => {
-      res.send(user);
-    })
-    .catch((err) => {
-      handleError(res, err);
-    });
-};
-
-const updateAvatar = (req, res) => {
-  const { avatar } = req.body;
-
-  User.findByIdAndUpdate(req.user._id, { avatar }, opts)
-    .orFail(() => {
-      orFailFunction();
-    })
-    .then((user) => {
-      res.send(user);
-    })
-    .catch((err) => {
-      handleError(res, err);
-    });
-};
-
-const updateEmail = (req, res) => {
-  const { email } = req.body;
-
-  User.findByIdAndUpdate(req.user._id, { email }, opts)
-    .orFail(() => {
-      orFailFunction();
-    })
-    .then((user) => {
-      res.send(user);
-    })
-    .catch((err) => {
-      handleError(res, err);
-    });
-};
-
-const updatePassword = (req, res) => {
-  const { password } = req.body;
-
-  bcrypt.hash(password, 10).then((hash) => {
-    User.findByIdAndUpdate(req.user._id, { password: hash }, opts)
-      .orFail(() => {
-        orFailFunction();
-      })
-      .then((user) => {
-        res.send(user);
-      })
-      .catch((err) => {
-        handleError(res, err);
-      });
-  });
-};
-
-/// Callback for User Updating route \\\
-
 const updateUserData = (req, res) => {
-  if (req.body.name) {
-    updateName(req, res);
-  } else if (req.body.avatar) {
-    updateAvatar(req, res);
-  } else if (req.body.email) {
-    updateEmail(req, res);
-  } else if (req.body.password) {
-    updatePassword(req, res);
-  }
+  const { name, avatar } = req.body;
+
+  User.findByIdAndUpdate(req.user._id, { name, avatar }, opts)
+    .orFail(() => {
+      orFailFunction();
+    })
+    .then((user) => {
+      res.send(user);
+    })
+    .catch((err) => {
+      handleError(res, err);
+    });
 };
 
 module.exports = {

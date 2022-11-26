@@ -1,39 +1,48 @@
+const {
+  notFound,
+  badRequest,
+  requestConflict,
+  serverError,
+  unauthorized,
+  forbidden,
+} = require('./errorCodes');
+
 const orFailFunction = () => {
   const error = new Error('Item ID not found');
-  error.statusCode = 404;
+  error.statusCode = notFound;
   throw error;
 };
 
 const handleError = (res, err) => {
-  if (err.statusCode === 404) {
-    res.status(404).send({ message: 'Item ID not found' });
+  if (err.statusCode === notFound) {
+    res.status(notFound).send({ message: 'Item ID not found' });
 
     return;
   }
   if (err.name === 'ValidationError' || err.name === 'CastError') {
-    res.status(400).send({ message: `Bad request: ${err.message}` });
+    res.status(badRequest).send({ message: 'Invalid data, check your request and try again' });
 
     return;
   }
   if (err.code === 11000) {
-    res.status(409).send({ message: 'Email you entered already exists' });
+    res.status(requestConflict).send({ message: 'Email you entered already exists' });
 
     return;
   }
 
-  res.status(500).send({ message: err.message });
+  res.status(serverError).send({ message: 'Something went wrong, we are working on it' });
 };
 
-const handleServerError = (res, err) => {
-  res.status(500).send({ message: err.message });
+const handleServerError = (res) => {
+  res.status(serverError).send({ message: 'Something went wrong, we are working on it' });
 };
 
 const handleAuthError = (res) => {
-  res.status(401).send({ message: 'Authorization Error' });
+  res.status(unauthorized).send({ message: 'Authorization Error' });
 };
 
 const handleDenyUpdate = (res) => {
-  res.status(403).send({ message: 'You have no access to update' });
+  res.status(forbidden).send({ message: 'You have no access to update' });
 };
 
 module.exports = {

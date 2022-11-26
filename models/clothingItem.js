@@ -10,7 +10,7 @@ const clothingItem = mongoose.Schema({
   },
   weather: {
     type: String,
-    enum: ['Hot', 'Cold', 'Warm'],
+    enum: ['hot', 'cold', 'warm'],
     required: true,
   },
   imageUrl: {
@@ -26,6 +26,7 @@ const clothingItem = mongoose.Schema({
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
+    required: true,
   },
   likes: {
     type: Array,

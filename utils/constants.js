@@ -5,7 +5,7 @@ const { PORT = 3001 } = process.env;
 /// Accepted Requests \\\
 
 const completedRequest = (result, respond) => {
-  respond.status(200).send(result);
+  respond.send(result);
 };
 
 const completedCreateRequst = (result, respond) => {
