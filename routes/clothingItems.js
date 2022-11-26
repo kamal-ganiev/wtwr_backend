@@ -11,7 +11,7 @@ const { checkOwner } = require('../middlewares/checkOwner');
 
 const router = express.Router();
 
-router.get('/', auth, getClothingItems);
+router.get('/', getClothingItems);
 router.post('/', auth, createClothingItem);
 router.delete('/:itemId', auth, checkOwner, deleteClothingItem);
 router.put('/:itemId/likes', auth, addLike);
