@@ -32,9 +32,14 @@ const handleAuthError = (res) => {
   res.status(401).send({ message: 'Authorization Error' });
 };
 
+const handleDenyUpdate = (res) => {
+  res.status(403).send({ message: 'You have no access to update' });
+};
+
 module.exports = {
   orFailFunction,
   handleError,
   handleServerError,
   handleAuthError,
+  handleDenyUpdate,
 };
