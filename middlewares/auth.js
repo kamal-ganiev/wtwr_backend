@@ -3,7 +3,7 @@ const { JWT_SECRET } = process.env;
 const { handleAuthError } = require('../utils/errors');
 
 function auth(req, res, next) {
-  const { authorization } = req.header;
+  const { authorization } = req.headers;
 
   if (!authorization || !authorization.startsWith('Bearer ')) {
     return handleAuthError(res);
