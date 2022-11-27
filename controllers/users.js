@@ -8,7 +8,7 @@ const {
 } = require('../utils/constants');
 const { orFailFunction, handleError } = require('../utils/errors');
 
-const { JWT_SECRET = 'dev_-key' } = process.env;
+const { JWT_SECRET = 'dev_key' } = process.env;
 
 const getUserById = (req, res) => {
   User.findById(req.params.userId)
