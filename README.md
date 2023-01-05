@@ -52,10 +52,3 @@ This project focuses on creating a server for the [WTWR application](https://git
 9. Log out easily in your "Profile" page:
 
 ![Logging Out](./images/demo/Logging%20out.gif);
-
-Most features are in developing process:
-
-- New user sign up
-- User log in
-- Keep user logged in
-- More...
