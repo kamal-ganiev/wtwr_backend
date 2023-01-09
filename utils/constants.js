@@ -1,6 +1,6 @@
 /// Server Port Constant \\\
 
-const { PORT = 3001 } = process.env;
+const { PORT = 3002 } = process.env;
 
 /// Accepted Requests \\\
 
