@@ -19,4 +19,14 @@ app.use('/items', require('./routes/clothingItems'));
 app.use('/users', require('./routes/users'));
 app.use('*', require('./routes/errorHandler'));
 
+app.use((err, req, res, next) => {
+  if (err.statusCode) {
+    res.status(err.statusCode).send({ message: err.message });
+  } else {
+    res.status(500).send({
+      message: 'There is an error occured on server, we are working on it',
+    });
+  }
+});
+
 app.listen(PORT);
