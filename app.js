@@ -10,10 +10,12 @@ const {
   userSignUpValidation,
   userLogInValidation,
 } = require('./middlewares/validation');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const app = express();
 runServer('mongodb://localhost:27017/wtwr_db');
 
+app.use(requestLogger);
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
@@ -24,8 +26,8 @@ app.use('/items', require('./routes/clothingItems'));
 app.use('/users', require('./routes/users'));
 app.use('*', require('./routes/errorHandler'));
 
+app.use(errorLogger);
 app.use(errors());
-
 app.use((err, req, res, next) => {
   if (err.statusCode) {
     res.status(err.statusCode).send({ message: err.message });
