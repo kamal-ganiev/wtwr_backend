@@ -15,7 +15,7 @@ const clothesValidation = celebrate({
         'string.max': 'The miximum length for "name" field is 30',
         'string.empty': 'The field can not be empty',
       }),
-      imageURL: Joi.string().required().custom(validateURL).messages({
+      imageUrl: Joi.string().required().custom(validateURL).messages({
         'string.empty': 'The field can not be empty',
         'string.uri':
           'The field must contain valid URL, example: "http://example.com/imageURL"',
