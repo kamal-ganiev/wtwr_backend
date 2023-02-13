@@ -21,6 +21,11 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/signup', userSignUpValidation, createUser);
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Server will crash now');
+  }, 0);
+});
 app.use('/signin', userLogInValidation, login);
 app.use('/items', require('./routes/clothingItems'));
 app.use('/users', require('./routes/users'));
@@ -39,4 +44,3 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT);
-
