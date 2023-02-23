@@ -34,13 +34,7 @@ app.use('*', require('./routes/errorHandler'));
 app.use(errorLogger);
 app.use(errors());
 app.use((err, req, res, next) => {
-  if (err.statusCode) {
-    res.status(err.statusCode).send(err.message);
-  } else {
-    res
-      .status(500)
-      .send('There is an error occured on server, we are working on it');
-  }
+  res.status(err.statusCode).send(err.message);
 });
 
 app.listen(PORT);

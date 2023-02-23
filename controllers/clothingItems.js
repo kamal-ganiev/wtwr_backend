@@ -3,7 +3,7 @@ const {
   completedRequest,
   completedCreateRequst,
 } = require('../utils/constants');
-const { checkError } = require('../utils/error-handler');
+const { errorHandler } = require('../utils/error-handler');
 const { NotFoundError } = require('../utils/errors');
 
 /// Handling Cards Calls \\\
@@ -18,7 +18,9 @@ const getClothingItems = (req, res, next) => {
 
       completedRequest(item, res);
     })
-    .catch(next);
+    .catch((err) => {
+      next(errorHandler(err));
+    });
 };
 
 const createClothingItem = (req, res) => {
@@ -35,8 +37,8 @@ const createClothingItem = (req, res) => {
     .then((item) => {
       completedCreateRequst(item, res);
     })
-    .catch((e) => {
-      checkError(e);
+    .catch((err) => {
+      next(errorHandler(err));
     });
 };
 
@@ -49,7 +51,9 @@ const deleteClothingItem = (req, res, next) => {
     .then((itemList) => {
       completedRequest(itemList, res);
     })
-    .catch((err) => checkError(err));
+    .catch((err) => {
+      next(errorHandler(err));
+    });
 };
 
 /// Handling Likes \\\
@@ -68,7 +72,7 @@ const addLike = (req, res, next) => {
       completedRequest(item, res);
     })
     .catch((err) => {
-      checkError(err);
+      next(errorHandler(err));
     });
 };
 
@@ -86,7 +90,7 @@ const removeLike = (req, res, next) => {
       completedRequest(item, res);
     })
     .catch((err) => {
-      checkError(err);
+      next(errorHandler(err));
     });
 };
 

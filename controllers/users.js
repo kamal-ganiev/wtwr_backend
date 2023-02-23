@@ -6,7 +6,7 @@ const {
   completedCreateRequst,
   opts,
 } = require('../utils/constants');
-const { checkError } = require('../utils/error-handler');
+const { errorHandler } = require('../utils/error-handler');
 const { NotFoundError, NotAuthError } = require('../utils/errors');
 
 const { JWT_SECRET = 'dev_key' } = process.env;
@@ -20,11 +20,11 @@ const getUserById = (req, res, next) => {
       completedRequest(user, res);
     })
     .catch((err) => {
-      checkError(err);
+      next(errorHandler(err));
     });
 };
 
-const createUser = (req, res) => {
+const createUser = (req, res, next) => {
   const { name, avatar, email, password } = req.body;
 
   bcrypt
@@ -43,7 +43,7 @@ const createUser = (req, res) => {
       completedCreateRequst(updatedDataToSend, res);
     })
     .catch((err) => {
-      checkError(err);
+      next(errorHandler(err));
     });
 };
 
@@ -59,7 +59,7 @@ const login = (req, res, next) => {
       res.send({ token });
     })
     .catch((err) => {
-      next(new NotAuthError('Wrong email or password'));
+      next(new NotAuthError('Incorrect email or password'));
     });
 };
 
@@ -71,8 +71,8 @@ const getCurrentUser = (req, res, next) => {
     .then((user) => {
       completedRequest(user, res);
     })
-    .catch((err) => {
-      checkError(err);
+    .catch(() => {
+      next(new NotAuthError('Incorrect email or password'));
     });
 };
 
@@ -83,13 +83,13 @@ const updateUserData = (req, res, next) => {
 
   User.findByIdAndUpdate(req.user._id, { name, avatar }, opts)
     .orFail(() => {
-      next(NotFoundError('Wrong id, user does not exist'));
+      next(new NotFoundError('Wrong id, user does not exist'));
     })
     .then((user) => {
       res.send(user);
     })
     .catch((err) => {
-      checkError(err);
+      next(errorHandler(err));
     });
 };
 
