@@ -4,7 +4,7 @@ const {
   completedCreateRequst,
 } = require('../utils/constants');
 const { errorHandler } = require('../utils/error-handler');
-const { NotFoundError } = require('../utils/errors');
+const { NotFoundError } = require('../utils/errors/NotFoundError');
 
 /// Handling Cards Calls \\\
 
@@ -23,7 +23,7 @@ const getClothingItems = (req, res, next) => {
     });
 };
 
-const createClothingItem = (req, res) => {
+const createClothingItem = (req, res, next) => {
   const { name, weather, imageUrl } = req.body;
   const owner = req.user._id;
 
@@ -63,7 +63,7 @@ const addLike = (req, res, next) => {
     .findByIdAndUpdate(
       req.params.itemId,
       { $addToSet: { likes: req.user._id } },
-      { new: true }
+      { new: true },
     )
     .orFail(() => {
       next(new NotFoundError('Looking item is not found'));
@@ -81,7 +81,7 @@ const removeLike = (req, res, next) => {
     .findByIdAndUpdate(
       req.params.itemId,
       { $pull: { likes: req.user._id } },
-      { new: true }
+      { new: true },
     )
     .orFail(() => {
       next(new NotFoundError('Looking item is not found'));

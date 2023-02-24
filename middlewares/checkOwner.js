@@ -1,26 +1,21 @@
-const {
-  handleDenyUpdate,
-  orFailFunction,
-  handleError,
-  NotAuthError,
-  NotFoundError,
-} = require('../utils/errors');
 const clothingItem = require('../models/clothingItem');
+const { ForbiddenError } = require('../utils/errors/ForbiddenError');
+const { NotFoundError } = require('../utils/errors/NotFoundError');
 
 const checkOwner = (req, res, next) => {
   clothingItem
     .findById(req.params.itemId)
     .orFail(() => {
-      orFailFunction();
+      next(new NotFoundError('Looking item is not found'));
     })
     .then((item) => {
       if (!item.owner.equals(req.user._id)) {
-        next(new NotAuthError('You are not authorised'));
+        next(new ForbiddenError('You do not have a permission for this'));
       }
 
       next();
     })
-    .catch((e) => {
+    .catch(() => {
       next(new NotFoundError('Looking user is not found'));
     });
 };

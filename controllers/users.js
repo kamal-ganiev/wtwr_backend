@@ -7,7 +7,8 @@ const {
   opts,
 } = require('../utils/constants');
 const { errorHandler } = require('../utils/error-handler');
-const { NotFoundError, NotAuthError } = require('../utils/errors');
+const { NotAuthError } = require('../utils/errors/NotAuthError');
+const { NotFoundError } = require('../utils/errors/NotFoundError');
 
 const { JWT_SECRET = 'dev_key' } = process.env;
 
@@ -25,18 +26,23 @@ const getUserById = (req, res, next) => {
 };
 
 const createUser = (req, res, next) => {
-  const { name, avatar, email, password } = req.body;
+  const {
+    name,
+    avatar,
+    email,
+    password,
+  } = req.body;
 
   bcrypt
     .hash(password, 10)
-    .then((hash) =>
+    .then((hash) => {
       User.create({
         name,
         avatar,
         email,
         password: hash,
-      })
-    )
+      });
+    })
     .then((updatedUser) => {
       const updatedDataToSend = updatedUser;
       updatedDataToSend.password = undefined;
@@ -58,7 +64,7 @@ const login = (req, res, next) => {
 
       res.send({ token });
     })
-    .catch((err) => {
+    .catch(() => {
       next(new NotAuthError('Incorrect email or password'));
     });
 };

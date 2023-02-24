@@ -2,10 +2,10 @@ const express = require('express');
 require('dotenv').config();
 const helmet = require('helmet');
 const cors = require('cors');
+const { errors } = require('celebrate');
 const { createUser, login } = require('./controllers/users');
 const { runServer } = require('./utils/config');
 const { PORT } = require('./utils/constants');
-const { errors } = require('celebrate');
 const {
   userSignUpValidation,
   userLogInValidation,
@@ -34,7 +34,7 @@ app.use('*', require('./routes/errorHandler'));
 app.use(errorLogger);
 app.use(errors());
 app.use((err, req, res, next) => {
-  res.status(err.statusCode).send(err.message);
+  res.status(err.statusCode).send({ message: err.message });
 });
 
 app.listen(PORT);

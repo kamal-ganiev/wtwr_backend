@@ -2,7 +2,13 @@
 
 This project focuses on creating a server for the [WTWR application](https://github.com/kamal-ganiev/se_project_react.git). The goal of this project is to deploy your own server on a remote machine with a connected database. The database uses MongoDB and is connected to the server via Mongoose.
 
+## Links and IP
+
 [Link to the Project](https://wtwr-kamal-ganiev.students.nomoredomainssbs.ru/)
+
+[Link to the Server](https://api.wtwr-kamal-ganiev.students.nomoredomainssbs.ru/)
+
+Public IP: 34.173.34.23
 
 ## Running the Project
 
