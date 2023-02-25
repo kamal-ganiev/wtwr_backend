@@ -24,7 +24,7 @@ const clothesValidation = celebrate({
     weather: Joi.string().required().valid('hot', 'cold', 'warm')
       .messages({
         'string.empty': 'The field can not be empty',
-      })
+      }),
   }),
 });
 
@@ -84,7 +84,13 @@ const userUpdateValidation = celebrate({
           'string.max': 'The miximum length for "name" field is 30',
           'string.empty': 'The field can not be empty',
         }),
-    })
+      avatar: Joi.string().required().custom(validateURL)
+        .messages({
+          'string.empty': 'The field can not be empty',
+          'string.uri':
+          'The field must contain valid URL, example: "http://example.com/imageURL"',
+        }),
+    }),
 });
 
 module.exports = {
