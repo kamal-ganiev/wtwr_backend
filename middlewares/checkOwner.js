@@ -2,8 +2,7 @@ const clothingItem = require('../models/clothingItem');
 const { ForbiddenError } = require('../utils/errors/ForbiddenError');
 const { NotFoundError } = require('../utils/errors/NotFoundError');
 
-const checkOwner = (req, res, next) => {
-  clothingItem
+const checkOwner = (req, res, next) => clothingItem
     .findById(req.params.itemId)
     .orFail(() => {
       next(new NotFoundError('Looking item is not found'));
@@ -15,9 +14,5 @@ const checkOwner = (req, res, next) => {
 
       next();
     })
-    .catch(() => {
-      next(new NotFoundError('Looking user is not found'));
-    });
-};
 
 module.exports = { checkOwner };

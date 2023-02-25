@@ -35,14 +35,12 @@ const createUser = (req, res, next) => {
 
   bcrypt
     .hash(password, 10)
-    .then((hash) => {
-      User.create({
+    .then((hash) => User.create({
         name,
         avatar,
         email,
         password: hash,
-      });
-    })
+    }))
     .then((updatedUser) => {
       const updatedDataToSend = updatedUser;
       updatedDataToSend.password = undefined;

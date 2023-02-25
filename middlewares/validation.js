@@ -21,6 +21,10 @@ const clothesValidation = celebrate({
         'string.uri':
         'The field must contain valid URL, example: "http://example.com/imageURL"',
       }),
+    weather: Joi.string().required().valid('hot', 'cold', 'warm')
+      .messages({
+        'string.empty': 'The field can not be empty',
+      })
   }),
 });
 
@@ -81,7 +85,6 @@ const userUpdateValidation = celebrate({
           'string.empty': 'The field can not be empty',
         }),
     })
-    .unknown(true),
 });
 
 module.exports = {
